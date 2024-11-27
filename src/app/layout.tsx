@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 };
 
 const test = "Commit staggad"
-
+console.log("test")
 export default function RootLayout({
   children,
 }: Readonly<{
