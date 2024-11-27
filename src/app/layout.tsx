@@ -22,13 +22,18 @@ export default function RootLayout({
   children,
 }: Readonly<{
   // eslint-disable-next-line no-undef
+  // eslint-disable-next-line no-undef
   children: React.ReactNode;
 }>) {
   return (
     <html lang="en">
       <body className={`${inter.className} ${ibmPlexSans.className}`}>
-        <Providers>{children}</Providers>
+
+        <Providers>
+          {children}
+        </Providers>
       </body>
-    </html>
+    </html >
+
   );
 }
