@@ -2,6 +2,7 @@ import { fetchMockCategories } from "@/services/mockApi";
 import React from "react";
 import MoviesSection from "./components/layouts/MoviesSection";
 import Header from "./components/layouts/Header";
+import ModalContainer from "./components/modals/modalContainer";
 
 
 
@@ -15,6 +16,7 @@ const Page = async () => {
         /> : null}
 
       <MoviesSection categories={categories} />
+      <ModalContainer />
     </main>
   );
 };

@@ -24,10 +24,10 @@ const Logo = () => (
     <Image
       src="/images/Logo.webp"
       alt="QuickBet Movies Logo"
-      width={150} // Ajusta el ancho de la imagen según el diseño
-      height={50} // Ajusta el alto de la imagen según el diseño
-      priority // Para que se cargue rápido
-      className="object-contain" // Asegura que la imagen se adapte bien
+      width={150}
+      height={50}
+      priority
+      className="object-contain"
     />
   </Link>
 );
@@ -40,7 +40,7 @@ const NavbarComponent = () => {
       isBordered
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
-      className="bg-black text-white shadow-md fixed w-full z-50"
+      className="bg-black text-white shadow-md fixed w-full z-40"
       maxWidth="2xl"
     >
       {/* Mobile */}

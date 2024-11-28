@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { LoginFormInputs } from "../types/auth";
 import { Button } from "@nextui-org/button";
-import { Input, Spacer } from "@nextui-org/react";
+import { Input } from "@nextui-org/react";
 import { validationRules } from "./validationRules";
 import { authenticateUser } from "@/services/userService";
 
@@ -44,20 +44,27 @@ const LoginForm = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="space-y-4 max-w-md mx-auto bg-gray-100 p-4 rounded-md shadow-md"
+      className="flex flex-col items-center space-y-6 max-w-md bg-transparent h-full justify-center"
     >
-      <h1 className="text-2xl font-bold text-center text-primary">Login</h1>
+      <h1 className="text-lg font-light text-white text-center">
+        We love having you back
+      </h1>
 
-      {serverError && <p className="text-red-500 text-center">{serverError}</p>}
+      {serverError && (
+        <p className="text-base text-main font-normal mt-1">{serverError}</p>
+      )}
 
       {/* Email */}
-      <div>
+      <div className="w-full">
         <Input
           type="email"
-          label="Correo Electrónico"
-          placeholder="Introduce tu correo electrónico"
+          placeholder="Email"
           fullWidth
+          size="lg"
           isClearable
+          className=" text-white"
+          classNames={{ errorMessage: " text-base text-main font-normal mt-1", inputWrapper: "rounded-none rounded-t-md" }}
+
           onFocusChange={(isFocused) => {
             if (!isFocused) {
               trigger("email");
@@ -79,21 +86,22 @@ const LoginForm = () => {
         />
       </div>
 
-      <Spacer y={1} />
-
       {/* Password */}
-      <div>
+      <div className="w-full">
         <Input
           type="password"
-          label="Contraseña"
-          placeholder="Introduce tu contraseña"
+          placeholder="Password"
           fullWidth
+          size="lg"
           isClearable
+          className=" text-white "
+
           onFocusChange={(isFocused) => {
             if (!isFocused) {
               trigger("password");
             }
           }}
+          classNames={{ errorMessage: " text-base text-main font-normal mt-1", inputWrapper: "rounded-none rounded-t-md" }}
           {...register("password", {
             required: passwordRequired,
             validate: (value) =>
@@ -110,17 +118,19 @@ const LoginForm = () => {
         />
       </div>
 
-      <Spacer y={1.5} />
-
+      {/* Submit Button */}
       <Button
         type="submit"
         fullWidth
-        color="primary"
+        size="lg"
+        className="bg-yellow-500 text-black hover:bg-yellow-600 transition-colors"
         isLoading={isSubmitting}
         disabled={isSubmitting}
       >
-        {isSubmitting ? "Logging in..." : "Login"}
+        {isSubmitting ? "Logging in..." : "Continue"}
       </Button>
+
+
     </form>
   );
 };

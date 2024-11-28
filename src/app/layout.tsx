@@ -11,7 +11,7 @@ const inter = Inter({
 
 const ibmPlexSans = IBM_Plex_Sans({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700", "300", "200"],
 });
 
 export const metadata: Metadata = {
@@ -30,6 +30,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} ${ibmPlexSans.className}`}>
         <Providers>
+
           <Navbar />
           <main className="pt-[80px]">
             {/* Offset for fixed Navbar */}

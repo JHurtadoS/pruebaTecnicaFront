@@ -1,29 +1,28 @@
 "use client";
 
-import React from "react";
-import { signIn, signOut, useSession } from "next-auth/react";
-import { Popover, PopoverTrigger, PopoverContent } from "@nextui-org/react";
-import { Listbox, ListboxItem } from "@nextui-org/react";
-import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { signOut, useSession } from "next-auth/react";
+import { Popover, PopoverTrigger, PopoverContent, Listbox, ListboxItem } from "@nextui-org/react";
 import { UserIcon } from "@heroicons/react/24/solid";
+import { useModal } from "./modals/contextModalAuth";
+import { modalContentLogin } from "./modals/modalData";
 
 export const Profile = () => {
     const { status } = useSession();
-    const router = useRouter();
+    const { openModal } = useModal();
+    const [isPopoverOpen, setPopoverOpen] = useState(false);
 
     const isAuthenticated = status === "authenticated";
 
     const handleProfileClick = () => {
-        if (isAuthenticated) {
-            router.push("/profile");
-        } else {
-            signIn();
-        }
+        setPopoverOpen(false);
+        openModal(modalContentLogin);
     };
 
     const handleSignOut = async () => {
         if (isAuthenticated) {
             await signOut();
+            setPopoverOpen(false);
         }
     };
 
@@ -41,20 +40,23 @@ export const Profile = () => {
     };
 
     return (
-        <Popover placement="bottom-end" showArrow offset={10}>
+        <Popover
+            isOpen={isPopoverOpen}
+            onOpenChange={(open) => setPopoverOpen(open)}
+            placement="bottom-end"
+            showArrow
+            offset={10}
+        >
             <PopoverTrigger>
                 <button
-                    // onClick={handleProfileClick}
-                    className={`p-1 rounded-full border-2 border-white ${isAuthenticated ? "bg-green-500" : ""}  transition-transform`}
+                    className={`p-1 rounded-full border-2 border-white ${isAuthenticated ? "bg-green-500" : ""
+                        }  transition-transform`}
                 >
                     <UserIcon className="w-8 h-8 text-white translate-y-[7px]" />
                 </button>
             </PopoverTrigger>
 
-            <PopoverContent className="p-0" >
-                {/* <div className="px-4 py-2 w-[180px]">
-
-                </div> */}
+            <PopoverContent className="p-0">
                 <Listbox
                     aria-label="Profile actions"
                     onAction={(key) => handleAction(key)}
@@ -62,18 +64,30 @@ export const Profile = () => {
                 >
                     {isAuthenticated ? (
                         <>
-                            <ListboxItem className="text-black hover:!rounded-none h-10 p-0 hover:!bg-transparent
-                             hover:!text-main text-center transition-colors" key="profile">Profile</ListboxItem>
-                            <ListboxItem key="logout" className="text-black hover:!rounded-none h-10 p-0 hover:!bg-transparent
-                             hover:!text-main text-center transition-colors" color="danger">
+                            <ListboxItem
+                                key="profile"
+                                className="text-black hover:!rounded-none h-10 p-0 hover:!bg-transparent
+                          hover:!text-main text-center transition-colors"
+                            >
+                                Profile
+                            </ListboxItem>
+                            <ListboxItem
+                                key="logout"
+                                className="text-black hover:!rounded-none h-10 p-0 hover:!bg-transparent
+                          hover:!text-main text-center transition-colors"
+                                color="danger"
+                            >
                                 Logout
                             </ListboxItem>
                         </>
                     ) : (
-                        <ListboxItem key="profile"
-                            className=" text-black hover:!rounded-none h-10 p-0 hover:!bg-transparent
-                             hover:!text-main text-center transition-colors" >
-                            <span className=" font-medium">Identificate</span>
+                        <ListboxItem
+                            key="profile"
+                            className="text-black hover:!rounded-none h-10 p-0 hover:!bg-transparent
+                          hover:!text-main text-center transition-colors"
+                            onClick={handleProfileClick}
+                        >
+                            <span className="font-medium">Identifícate</span>
                         </ListboxItem>
                     )}
                 </Listbox>

@@ -3,11 +3,11 @@
 import React from "react";
 import Image from "next/image";
 import { HeartIcon } from "@heroicons/react/24/solid";
-import { Movie } from "@/types/movie"; // Asegúrate de ajustar la ruta al tipo de Movie
+import { Movie } from "@/types/movie";
 import RatingBar from "../ratingBar";
 
 interface HeaderProps {
-    movie: Movie; // Ahora recibe un objeto Movie completo
+    movie: Movie;
 }
 
 const Header: React.FC<HeaderProps> = ({ movie }) => {
@@ -15,10 +15,10 @@ const Header: React.FC<HeaderProps> = ({ movie }) => {
 
     return (
         <header className="relative h-[400px] w-full text-white shadow-[0_8px_10px_rgba(0,0,0,0.2)]">
-            {/* Imagen de fondo */}
+
             <div className="absolute inset-0 -z-0">
                 <Image
-                    src={images.hero} // Usamos la imagen de tipo hero
+                    src={images.hero}
                     alt={`${title} Hero Image`}
                     fill
                     priority
@@ -27,7 +27,6 @@ const Header: React.FC<HeaderProps> = ({ movie }) => {
                 />
             </div>
 
-            {/* Contenido del header */}
             <div className="absolute inset-0 flex flex-col justify-end px-8 bg-gradient-to-t from-black from-[17%] via-transparent pb-6">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 w-full">
                     {/* Columna izquierda: título y descripción */}

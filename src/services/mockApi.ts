@@ -1,5 +1,3 @@
-// mockApi.ts
-
 import { Category } from "@/types/movie";
 
 
@@ -298,6 +296,6 @@ export const fetchMockCategories = async (): Promise<Category[]> => {
     return new Promise((resolve) => {
         setTimeout(() => {
             resolve(mockData);
-        }, 1000); // Simulamos un retraso de 1 segundo para imitar una llamada a la API
+        }, 1000);
     });
 };
