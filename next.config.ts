@@ -4,8 +4,7 @@ const nextConfig: NextConfig = {
   eslint: {
     dirs: ["pages", "utils"],
   },
-  srcDir: true
-
+  // srcDir: true
 };
 
 export default nextConfig;

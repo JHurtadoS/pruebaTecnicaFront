@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
+import Navbar from "./components/layouts/Navbar";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -28,12 +29,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} ${ibmPlexSans.className}`}>
-
         <Providers>
-          {children}
+          <Navbar />
+          <main className="pt-[80px]">
+            {/* Offset for fixed Navbar */}
+            {children}
+          </main>
         </Providers>
       </body>
-    </html >
-
+    </html>
   );
 }
