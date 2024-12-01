@@ -1,16 +1,17 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { Inter, IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
+import { Providers } from "./providers";
+import Navbar from "./components/layouts/Navbar";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+
+const ibmPlexSans = IBM_Plex_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "300", "200"],
 });
 
 export const metadata: Metadata = {
@@ -21,14 +22,20 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{
+  // eslint-disable-next-line no-undef
+  // eslint-disable-next-line no-undef
   children: React.ReactNode;
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body className={`${inter.className} ${ibmPlexSans.className}`}>
+        <Providers>
+
+          <Navbar />
+          <main className="pt-[80px]">
+            {children}
+          </main>
+        </Providers>
       </body>
     </html>
   );
