@@ -31,12 +31,6 @@ Asegúrate de configurar la variable de entorno en tu archivo `.env.local`:
    npm install
    ```
 
-### Instrucciones para usar el archivo:
-
-1. Crea un archivo **`README.md`** en la raíz de tu proyecto frontend.
-2. Copia y pega el contenido proporcionado en este archivo.
-3. Guarda los cambios.
-
 ## **Licencia y Derechos de Autor**
 
 El diseño y la implementación de esta aplicación fueron creados por el equipo de desarrollo como parte de un proyecto personal y educativo. Todo el contenido generado, como el código fuente, los componentes de diseño y la estructura de la aplicación, está sujeto a los derechos de autor del equipo creador, a menos que se indique lo contrario.
