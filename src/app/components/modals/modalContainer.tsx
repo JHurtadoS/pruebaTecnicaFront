@@ -1,13 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ModalLayout from "./modalAuth";
 import { useModal } from "./contextModalAuth";
 import LoginForm from "../forms/Login";
 import SignUpForm from "../forms/SignUp";
+import { useSession } from "../context/authContext";
 
 const ModalContainer: React.FC = () => {
     const { isOpen, closeModal } = useModal();
+    const { isLoggedIn } = useSession();
     const [isLogin, setIsLogin] = useState(true);
 
     const loginConfig = {
@@ -28,6 +30,11 @@ const ModalContainer: React.FC = () => {
         setIsLogin(loginMode);
     };
 
+    useEffect(() => {
+        if (isLoggedIn) {
+            closeModal();
+        }
+    }, [isLoggedIn, closeModal]);
 
     if (!isOpen) return null;
 
@@ -41,7 +48,6 @@ const ModalContainer: React.FC = () => {
             onClose={closeModal}
             onSwitch={handleSwitch}
         >
-
             {isLogin ? <LoginForm /> : <SignUpForm />}
         </ModalLayout>
     );

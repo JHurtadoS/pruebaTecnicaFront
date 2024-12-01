@@ -12,8 +12,8 @@ type Props = {
 const RatingBar = ({ rating }: Props) => {
     return (
         <CircularProgressbar
-            value={rating}
-            text={`${rating}%`}
+            value={rating * 100}
+            text={`${rating * 100}%`}
             styles={buildStyles({
                 textSize: "29px",
                 textColor: "#ffffff",

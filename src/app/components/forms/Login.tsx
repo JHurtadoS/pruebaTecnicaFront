@@ -2,11 +2,10 @@
 
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { LoginFormInputs } from "../types/auth";
 import { Button } from "@nextui-org/button";
 import { Input } from "@nextui-org/react";
 import { validationRules } from "./validationRules";
-import { authenticateUser } from "@/services/userService";
+import { useSession } from "../context/authContext";
 
 const LoginForm = () => {
   const {
@@ -14,8 +13,9 @@ const LoginForm = () => {
     handleSubmit,
     formState: { errors, isSubmitting, touchedFields },
     trigger,
-  } = useForm<LoginFormInputs>();
+  } = useForm<{ email: string; password: string; }>();
 
+  const { login } = useSession();
   const [serverError, setServerError] = useState<string | null>(null);
 
   const {
@@ -28,17 +28,23 @@ const LoginForm = () => {
     minLength: { value: passwordMinLength, message: passwordMinLengthMessage },
   } = validationRules.password;
 
-  const onSubmit = async (data: LoginFormInputs) => {
+  const onSubmit = async (data: { email: string; password: string; }) => {
     setServerError(null);
 
-    const response = await authenticateUser(data);
+    try {
 
-    if (!response.success) {
-      setServerError(response.message || "Invalid credentials.");
-      return;
+      const success = await login(data.email, data.password);
+
+      if (!success) {
+        setServerError("Invalid credentials.");
+        return;
+      }
+
+      console.log("Logged in successfully!");
+    } catch (error) {
+      setServerError("An error occurred during login.");
+      console.error(error);
     }
-
-    console.log("Logged in successfully, token:", response.token);
   };
 
   return (
@@ -54,7 +60,7 @@ const LoginForm = () => {
         <p className="text-base text-main font-normal mt-1">{serverError}</p>
       )}
 
-      {/* Email */}
+
       <div className="w-full">
         <Input
           type="email"
@@ -62,9 +68,11 @@ const LoginForm = () => {
           fullWidth
           size="lg"
           isClearable
-          className=" text-white"
-          classNames={{ errorMessage: " text-base text-main font-normal mt-1", inputWrapper: "rounded-none rounded-t-md" }}
-
+          className="text-white"
+          classNames={{
+            errorMessage: "text-base text-main font-normal mt-1",
+            inputWrapper: "rounded-none rounded-t-md",
+          }}
           onFocusChange={(isFocused) => {
             if (!isFocused) {
               trigger("email");
@@ -86,7 +94,7 @@ const LoginForm = () => {
         />
       </div>
 
-      {/* Password */}
+
       <div className="w-full">
         <Input
           type="password"
@@ -94,14 +102,16 @@ const LoginForm = () => {
           fullWidth
           size="lg"
           isClearable
-          className=" text-white "
-
+          className="text-white"
           onFocusChange={(isFocused) => {
             if (!isFocused) {
               trigger("password");
             }
           }}
-          classNames={{ errorMessage: " text-base text-main font-normal mt-1", inputWrapper: "rounded-none rounded-t-md" }}
+          classNames={{
+            errorMessage: "text-base text-main font-normal mt-1",
+            inputWrapper: "rounded-none rounded-t-md",
+          }}
           {...register("password", {
             required: passwordRequired,
             validate: (value) =>
@@ -118,7 +128,7 @@ const LoginForm = () => {
         />
       </div>
 
-      {/* Submit Button */}
+
       <Button
         type="submit"
         fullWidth
@@ -129,8 +139,6 @@ const LoginForm = () => {
       >
         {isSubmitting ? "Logging in..." : "Continue"}
       </Button>
-
-
     </form>
   );
 };

@@ -51,7 +51,7 @@ const ModalLayout: React.FC<ModalLayoutProps> = ({
             <ModalContent className="flex flex-col md:flex-row h-[700px] shadow-lg bg-neutral-100/10">
 
                 <div className="w-full md:w-1/2   flex flex-col justify-between p-8 relative h-full">
-                    {/* Botón de retroceso */}
+
                     <ModalHeader className="absolute top-4 left-4">
                         <button
                             className="flex items-center gap-2 text-white hover:text-gray-300"
@@ -62,9 +62,9 @@ const ModalLayout: React.FC<ModalLayoutProps> = ({
                         </button>
                     </ModalHeader>
 
-                    {/* Contenido principal de la izquierda */}
+
                     <div className="flex flex-col justify-center items-center gap-6 h-full">
-                        {/* Botones de alternancia */}
+
                         <div className="flex mt-10 bg-neutral-900 rounded-xl">
                             <Button
                                 color={isLogin ? "primary" : "default"}
@@ -82,7 +82,7 @@ const ModalLayout: React.FC<ModalLayoutProps> = ({
                             </Button>
                         </div>
 
-                        {/* Contenido dinámico */}
+
                         <ModalBody className="text-center">
                             <>
                                 {children}

@@ -33,7 +33,6 @@ export default function RootLayout({
 
           <Navbar />
           <main className="pt-[80px]">
-            {/* Offset for fixed Navbar */}
             {children}
           </main>
         </Providers>

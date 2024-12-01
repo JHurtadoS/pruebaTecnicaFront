@@ -6,7 +6,7 @@ export const modalContentLogin: ModalContentProps = {
     rightImage: "/images/login_image.webp",
     children: (
         <div className="flex flex-col items-center gap-4">
-            {/* Aquí integras el formulario de login */}
+
             <p className="text-white font-medium">We love having you back</p>
             <form className="flex flex-col gap-3 w-full max-w-sm">
                 <input
@@ -39,7 +39,7 @@ export const modalContentRegister: ModalContentProps = {
     rightImage: "/images/register_image.webp",
     children: (
         <div className="flex flex-col items-center gap-4">
-            {/* Aquí integras el formulario de registro */}
+
             <p className="text-white font-medium">Create your account</p>
             <form className="flex flex-col gap-3 w-full max-w-sm">
                 <input

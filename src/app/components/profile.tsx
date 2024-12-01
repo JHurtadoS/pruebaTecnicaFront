@@ -1,28 +1,29 @@
 "use client";
 
 import React, { useState } from "react";
-import { signOut, useSession } from "next-auth/react";
-import { Popover, PopoverTrigger, PopoverContent, Listbox, ListboxItem } from "@nextui-org/react";
+import { Popover, PopoverTrigger, PopoverContent, Listbox, ListboxItem, ListboxSection } from "@nextui-org/react";
 import { UserIcon } from "@heroicons/react/24/solid";
 import { useModal } from "./modals/contextModalAuth";
 import { modalContentLogin } from "./modals/modalData";
+import { useSession } from "./context/authContext";
+import { useRouter } from "next/navigation";
 
-export const Profile = () => {
-    const { status } = useSession();
+export const Profile: React.FC = () => {
+    const { isLoggedIn, logout } = useSession();
     const { openModal } = useModal();
     const [isPopoverOpen, setPopoverOpen] = useState(false);
-
-    const isAuthenticated = status === "authenticated";
+    const router = useRouter();
 
     const handleProfileClick = () => {
         setPopoverOpen(false);
         openModal(modalContentLogin);
     };
 
-    const handleSignOut = async () => {
-        if (isAuthenticated) {
-            await signOut();
+    const handleSignOut = () => {
+        if (isLoggedIn) {
+            logout();
             setPopoverOpen(false);
+            router.refresh()
         }
     };
 
@@ -49,8 +50,7 @@ export const Profile = () => {
         >
             <PopoverTrigger>
                 <button
-                    className={`p-1 rounded-full border-2 border-white ${isAuthenticated ? "bg-green-500" : ""
-                        }  transition-transform`}
+                    className={`p-1 rounded-full border-2 border-white ${isLoggedIn ? "bg-main" : ""} transition-transform`}
                 >
                     <UserIcon className="w-8 h-8 text-white translate-y-[7px]" />
                 </button>
@@ -62,29 +62,29 @@ export const Profile = () => {
                     onAction={(key) => handleAction(key)}
                     className="w-full p-0 min-w-32 min-h-32"
                 >
-                    {isAuthenticated ? (
-                        <>
+                    {isLoggedIn ? (
+                        <ListboxSection >
                             <ListboxItem
-                                key="profile"
-                                className="text-black hover:!rounded-none h-10 p-0 hover:!bg-transparent
-                          hover:!text-main text-center transition-colors"
+                                key="profileLogged"
+                                className="text-black hover:!rounded-none h-10 p-0 hover:!bg-transparent hover:!text-main text-center transition-colors"
                             >
-                                Profile
+                                <span>Welcome </span>
                             </ListboxItem>
+
+
                             <ListboxItem
                                 key="logout"
-                                className="text-black hover:!rounded-none h-10 p-0 hover:!bg-transparent
-                          hover:!text-main text-center transition-colors"
-                                color="danger"
+                                className="text-black hover:!rounded-none h-10 p-0 hover:!bg-transparent hover:!text-main text-center transition-colors"
+                                onClick={handleSignOut}
                             >
-                                Logout
+                                Cerrar sesion
                             </ListboxItem>
-                        </>
+                        </ListboxSection>
+
                     ) : (
                         <ListboxItem
                             key="profile"
-                            className="text-black hover:!rounded-none h-10 p-0 hover:!bg-transparent
-                          hover:!text-main text-center transition-colors"
+                            className="text-black hover:!rounded-none h-10 p-0 hover:!bg-transparent hover:!text-main text-center transition-colors"
                             onClick={handleProfileClick}
                         >
                             <span className="font-medium">Identifícate</span>

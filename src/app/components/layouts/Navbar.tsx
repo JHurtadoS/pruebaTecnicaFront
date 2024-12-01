@@ -15,8 +15,8 @@ import { Profile } from "../profile";
 import Image from "next/image";
 
 const menuItems = [
-  { label: "Popular", href: "/popular" },
-  { label: "Favorites", href: "/favorites" },
+  { label: "Popular", href: "#" },
+  { label: "Favorites", href: "#" },
 ];
 
 const Logo = () => (
@@ -43,7 +43,7 @@ const NavbarComponent = () => {
       className="bg-black text-white shadow-md fixed w-full z-40"
       maxWidth="2xl"
     >
-      {/* Mobile */}
+
       <NavbarContent className="sm:hidden" justify="start">
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
@@ -56,7 +56,7 @@ const NavbarComponent = () => {
         </NavbarBrand>
       </NavbarContent>
 
-      {/* Desktop */}
+
       <NavbarContent className="hidden sm:flex gap-6" justify="center">
         <NavbarBrand>
           <Logo />
@@ -73,14 +73,14 @@ const NavbarComponent = () => {
         ))}
       </NavbarContent>
 
-      {/* Profile Section */}
+
       <NavbarContent justify="end">
         <NavbarItem>
           <Profile />
         </NavbarItem>
       </NavbarContent>
 
-      {/* Mobile Menu */}
+
       <NavbarMenu>
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item.label}-${index}`}>

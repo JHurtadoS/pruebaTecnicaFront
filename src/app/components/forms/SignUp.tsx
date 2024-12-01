@@ -5,7 +5,8 @@ import { useForm } from "react-hook-form";
 import { Button } from "@nextui-org/button";
 import { Input } from "@nextui-org/react";
 import { validationRules } from "./validationRules";
-import { registerUser } from "@/services/userService";
+import { registerUser } from "@/services/authApi";
+import { useSession } from "../context/authContext";
 
 const SignUpForm = () => {
     const {
@@ -13,26 +14,46 @@ const SignUpForm = () => {
         handleSubmit,
         formState: { errors, isSubmitting, touchedFields },
         trigger,
-    } = useForm<{ email: string }>();
+    } = useForm<{ email: string; password: string }>();
 
+    const { login } = useSession();
     const [serverError, setServerError] = useState<string | null>(null);
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
     const {
         required: emailRequired,
         pattern: { value: emailPattern, message: emailPatternMessage },
     } = validationRules.email;
 
-    const onSubmit = async ({ email }: { email: string }) => {
+    const {
+        required: passwordRequired,
+        minLength: { value: passwordMinLength, message: passwordMinLengthMessage },
+    } = validationRules.password;
+
+    const onSubmit = async ({ email, password }: { email: string; password: string }) => {
         setServerError(null);
+        setSuccessMessage(null);
 
-        const response = await registerUser(email);
+        try {
+            const response = await registerUser(email, password);
+            console.log(response)
+            if (!(response.status === 200 || response.status === 201)) {
+                setServerError("Error while registering.");
+                return;
+            }
 
-        if (!response.success) {
-            setServerError(response.message || "Error while registering.");
-            return;
+            setSuccessMessage("Registration successful! Logging you in...");
+
+
+            const loggedIn = await login(email, password);
+
+            if (!loggedIn) {
+                setServerError("Failed to log in after registration.");
+            }
+        } catch (error) {
+            console.error(error)
+            setServerError("An unexpected error occurred.");
         }
-
-        console.log("Registration successful:", response);
     };
 
     return (
@@ -40,14 +61,15 @@ const SignUpForm = () => {
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col items-center space-y-6 max-w-md bg-transparent h-full justify-center"
         >
-
-
-
             {serverError && (
-                <p className="text-base text-main font-normal mt-1">{serverError}</p>
+                <p className="text-base text-red-500 font-normal mt-1">{serverError}</p>
             )}
 
-            {/* Email Field */}
+            {successMessage && (
+                <p className="text-base text-green-500 font-normal mt-1">{successMessage}</p>
+            )}
+
+
             <div className="w-full">
                 <Input
                     type="email"
@@ -55,8 +77,10 @@ const SignUpForm = () => {
                     fullWidth
                     size="lg"
                     isClearable
-                    classNames={{ errorMessage: " text-base text-main font-normal mt-1", inputWrapper: "rounded-none rounded-t-md" }}
-
+                    classNames={{
+                        errorMessage: "text-base text-main font-normal mt-1",
+                        inputWrapper: "rounded-none rounded-t-md",
+                    }}
                     onFocusChange={(isFocused) => {
                         if (!isFocused) {
                             trigger("email");
@@ -78,7 +102,40 @@ const SignUpForm = () => {
                 />
             </div>
 
-            {/* Submit Button */}
+
+            <div className="w-full">
+                <Input
+                    type="password"
+                    placeholder="Enter your Password"
+                    fullWidth
+                    size="lg"
+                    isClearable
+                    classNames={{
+                        errorMessage: "text-base text-main font-normal mt-1",
+                        inputWrapper: "rounded-none rounded-t-md",
+                    }}
+                    onFocusChange={(isFocused) => {
+                        if (!isFocused) {
+                            trigger("password");
+                        }
+                    }}
+                    {...register("password", {
+                        required: passwordRequired,
+                        validate: (value) =>
+                            value && value.length < passwordMinLength
+                                ? passwordMinLengthMessage
+                                : undefined,
+                    })}
+                    errorMessage={
+                        touchedFields.password && errors.password
+                            ? errors.password.message
+                            : undefined
+                    }
+                    isInvalid={touchedFields.password && errors.password ? true : false}
+                />
+            </div>
+
+
             <Button
                 type="submit"
                 fullWidth
@@ -87,11 +144,8 @@ const SignUpForm = () => {
                 isLoading={isSubmitting}
                 disabled={isSubmitting}
             >
-                {isSubmitting ? "Registering..." : "Register with your Email"}
+                {isSubmitting ? "Registering..." : "Register"}
             </Button>
-
-            {/* Footer Text */}
-
         </form>
     );
 };
